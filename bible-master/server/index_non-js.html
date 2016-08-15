@@ -1,0 +1,100 @@
+<!doctype html>
+<!-- NOTE: The doctype tag must be first in order for IE to render the page correctly. -->
+
+<html>
+<head>
+    <!-- NOTE: If the charset meta parameter is placed after the 1024th byte, some browsers reload the page after parsing the meta data. -->
+    <meta charset=utf-8>
+<!--
+
+/**
+ * BibleForge
+ *
+ * @date    05-26-12
+ * @version alpha (α)
+ * @link    http://BibleForge.com
+ * @license The MIT License (MIT)
+ */
+
+/*!
+ * The BibleForge motto:
+ *
+ * "all things whatsoever ye would that men should do to you, do ye even so to them."
+ *     —Jesus (Matthew 7:12)
+ */
+
+/*!
+ * Copyright (C) 2014
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining
+ * a copy of this software and associated documentation files (the
+ * “Software”), to deal in the Software without restriction, including
+ * without limitation the rights to use, copy, modify, merge, publish,
+ * distribute, sublicense, and/or sell copies of the Software, and to
+ * permit persons to whom the Software is furnished to do so.
+ *
+ * THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND,
+ * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+ * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+ * IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
+ * CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
+ * TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+ * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ */
+
+Welcome to hacking BibleForge.
+
+This is a non-JavaScript version of the HTML.  See index.html for more info about BibleForge.
+
+-->
+    <title>{TITLE}</title>
+    <link rel=stylesheet href="/styles/base.css?f389c66a05b2e337f601318e99fed95d">
+    {LANG_CSS}
+    <link rel="icon" type="image/png" href="/images/favicon.png">
+    <!-- This graphic is used by handhelds and tablets for a bookmark icon. -->
+    <!-- NOTE: May want to use the precomposed option (apple-touch-icon-precomposed). -->
+    <link rel="apple-touch-icon" href="/images/scroll_210.png">
+    <meta name=description content="BibleForge: The free, open source Bible Study web app. {DESC}">
+    <!-- NOTE: Viewport properties are set in the CSS because the viewport meta tag does not support using a percentage for the width property. -->
+    <!-- Redirect supported browsers to the full version. -->
+    <!--[if !IE]> -->
+        <script>
+            /// Do not redirect Android browsers.
+            if ({FORCE_REDIRECT}window.navigator.userAgent.indexOf("Mobile Safari/") === -1 && window.navigator.userAgent.indexOf("Android") === -1) {
+                window.location.replace("{FULL_URI}");
+            }
+        </script>
+    <!-- <![endif]-->
+    <!-- Redirect IE 10+. -->
+    <!--[if gte IE 10]>
+        <script>
+            window.location.replace("{FULL_URI}");
+        </script>
+    <![endif]-->
+</head>
+<body
+><div class=viewPorts id=viewPort0
+    ><div class=topBars
+        ><div class=searchBars
+            ><form action="/!"
+                >{LANG_SELECT}<label for=q0 class=queryPadding
+                    ><nobr
+                        ><input type=button class=lang
+                        ><input type=text value="{QUERY}" name=q id=q0 class=queryInput
+                        ><input type=submit class=inputIcon alt=Go value=""
+                    ></nobr
+                ></label
+            ></form
+        ></div
+        ><div class=infoBars
+            ><div class=infoLeft></div
+        ></div
+    ></div
+    ><!-- This <div> is used to push the data down below the top bar. --><div class=loaders></div
+    ><div class=unsupported_warning
+    >{UNSUPPORTED_WARNING}</div
+    ><div class="lang_{LANG} scrolls">{CONTENT}</div
+    ><div class=footer>{FOOTER}</div
+></div
+></body
+></html>

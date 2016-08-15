@@ -1,0 +1,16 @@
+BibleForge follows the teachings of Jesus, namely
+
+    "all things whatsoever ye would that men should do to you, do ye even so to them."
+        —Jesus (Matthew 7:12)
+
+Therefore, BibleForge is free, open source software.  BibleForge is licensed under the MIT license.
+This basically means that you can copy it, change it, and even sell it.  See mit.txt for details.
+
+Also, see credits.txt for details about specific files.
+
+Font licenses:
+
+The Bitstream Vera Fonts fonts are copyrighted under an open source license as found
+in bitstream_font_license.txt.  The Tex Gyre Pagella fonts are also copyrighted under an
+open source copyright as found in gust_font_license.txt.  The BF Hebrew and IM Fell DW Pica
+fonts are licensed under the SIL Open Font License as found in ofl-1.1.txt.

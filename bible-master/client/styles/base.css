@@ -1,0 +1,1492 @@
+ /**
+ * BibleForge
+ *
+ * @date    10-30-08
+ * @version alpha (α)
+ * @link    http://BibleForge.com
+ * @license The MIT License (MIT)
+ */
+
+/*!
+ * The BibleForge motto:
+ *
+ * "all things whatsoever ye would that men should do to you, do ye even so to them."
+ *     —Jesus (Matthew 7:12)
+ */
+
+/*!
+ * Copyright (C) 2014
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining
+ * a copy of this software and associated documentation files (the
+ * “Software”), to deal in the Software without restriction, including
+ * without limitation the rights to use, copy, modify, merge, publish,
+ * distribute, sublicense, and/or sell copies of the Software, and to
+ * permit persons to whom the Software is furnished to do so.
+ *
+ * THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND,
+ * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+ * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+ * IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
+ * CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
+ * TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+ * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ */
+
+/*TODO: Completely document the CSS. */
+/*TODO: Re-order (as well as maybe group) the styles alphabetically or in a logical order. */
+
+/* Normalize Mozilla button styles. */
+/* Also, remove the ugly dashed border on the text of buttons in Mozilla when clicked. */
+button::-moz-focus-inner, input::-moz-focus-inner {
+    border: 0;
+    padding: 0;
+}
+
+input, textarea {
+    /* This removes the awful, non-rounded selection rectangle that WebKit imposes. */
+    outline: 0;
+}
+
+
+html, body {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    width: 100%;
+    /* System/user settings are not be the same for every user, so the background and text color must be explicitly set. */
+    background: #FFF;
+    color: #000;
+}
+
+html {
+    overflow-y:  scroll;
+    overflow-x:  hidden;
+    font-family: Verdana, 'Bitstream Vera Sans', 'Bitstream Vera Sans Webfont', 'DejaVu Sans', sans-serif;
+    font-size:   15px;
+    
+    /* Improve the text rendering and enable support for ligatures and kerning in Mozilla. */
+    /*NOTE: This may have a slight speed cost. */
+    /*NOTE: This does not effect Mozilla on Macs. */
+    text-rendering: optimizeLegibility;
+}
+
+input, .callout, .lang {
+    /*NOTE: Input fields do not inherit from the HTML element. */
+    /*      If a font-family is not specified, it will use a system default. */
+    /*      On Windows, that font is "MS Shell Dlg," which is actually "Microsoft Sans Serif." */
+    /*TODO: Make/find a good replacement font for Arial. */
+    font-family: Arial, 'DejaVu Sans', sans-serif;
+}
+
+body {
+    overflow: hidden;
+}
+
+
+.topBars {
+    position: fixed;
+    top:      0;
+    left:     0;
+    width:    100%;
+    height:   30px;
+    /* This needs to be above most floating elements (excluding the context menu). */
+    z-index:  999999;
+}
+
+.searchBars {
+    /* A solid background for IE/Mozilla 2-/Opera 9.6- */
+    background: #FFF;
+    /* Transparent white background for Firefox 3.5-/Opera 10 */
+    background: rgba(255,255,255,.9);
+    /* Chrome/Safari 5.1+ */
+    background: -webkit-linear-gradient(rgba(255,255,255,.98), rgba(255,255,255,.93) 25%, rgba(255,255,255,.87));
+    /* IE 10, Firefox 16+, Opera 12.10+ */
+    background:         linear-gradient(rgba(255,255,255,.98), rgba(255,255,255,.93) 25%, rgba(255,255,255,.87));
+    width:  100%;
+    height: 100%;
+    text-align: center;
+}
+
+.infoBars {
+    /* A solid background for IE/Mozilla (Firefox 2-)/Opera 9.6- */
+    background:    #FFD;
+    /* Transparent yellow background */
+    background:    rgba(255,255,221,.87);
+    border-top:    #EEE999 solid 1px;
+    border-bottom: #EEE999 solid 1px;
+    
+    padding-left: 3px;
+    
+    width:  100%;
+    height: 18px;
+    
+    /* Prevent a long search string from overflowing the info bar by cutting it short and adding an ellipsis. (Mozilla has no support for this yet.) */
+    /*FIXME: This does not work yet. */
+    text-overflow:    ellipsis;
+    /* Opera specific */
+    -o-text-overflow: ellipsis;
+    /* This is what actually hides the text, currently. */
+    overflow:         hidden;
+    
+    /* Prevent excess whitespace from collapsing when displaying user generated search terms. */
+    white-space: pre-wrap;
+    
+    font-size: 13px;
+    
+    box-shadow: 0 3px 6px rgba(0,0,0,.08);
+}
+
+.infoLeft {
+    /* Make the <div> not take up the entire width of the infoBar. */
+    float: left;
+    
+    /* Add a slight radial blur to make sure the text is always readable.*/
+    /* Chrome/Safari 5.1+ */
+    background: -webkit-radial-gradient(ellipse farthest-corner, #FFFFE2 70%, rgba(255,255,226,0) 100%);
+    /* IE 10, Firefox 16+, Opera 12.10+ */
+    background:         radial-gradient(ellipse farthest-corner, #FFFFE2 70%, rgba(255,255,226,0) 100%);
+}
+
+.queryInput {
+    background: rgba(255,255,255,.5);
+    
+    /* Padding is used to push the text away from the rounded corners. */
+    padding: 3px 25px 1px 7px;
+    
+    font-size: 15px;
+    
+    max-width: 480px;
+    min-width: 30px;
+    /*NOTE: 100% width cannot be used because it extends off the page */
+    /*       70% is used because it is a good balance when the page is wide or narrow. */
+    width:     70%;
+    height:    18px;
+    
+    /* Dim the text when not in focus (or hovering) so that it does not distract from the text. */
+    color: #A7A7A7;
+    
+    border-style: solid;
+    border-width: 1px;
+    /* This gives the input box a slight 3D effect. */
+    border-color:  #BBB #CACACA #C3C3C3 #A1A19B;
+    border-radius: 15px;
+    
+    /* Add slight gradient shadow to the top of the input box. */
+    box-shadow: inset 0 2px 3px rgba(0,0,0,.16);
+        
+    /* The margin balances moves the input box over a little so as not to cover the wrench icon. */
+    margin: 2px 30px;
+    
+    /* Apply transitions to all changes (in particular, background-color, border-color, and color). */
+    /* Transition for Mozilla (Firefox 4.0+) */
+       -moz-transition: all .3s;
+    /* Transition for WebKit */
+    -webkit-transition: all .3s;
+    /* Transition for Opera 10.5+ */
+            transition: all .3s;
+}
+
+/**
+ * Highlight the input box partially on hover.
+ */
+.queryInput:hover {
+    border-color: #96968E;
+}
+
+/**
+ * Highlight the input box.
+ */
+.queryInput:focus {
+    border-color: #96968E;
+    
+    /* Darken the text so that it is more prominent. */
+    color: #555;
+    background-color: #FFF;
+}
+
+/**
+ * Keep the placeholder text grayed out.
+ */
+/* NOTE: WebKit does not need this because the placeholder text does not change colors on focus. */
+/*       However, in Night Mode, WebKit's font color is too bright, so it is lightened in night.css.
+/* NOTE: WebKit's placeholder property is "::-webkit-input-placeholder" (note the double colons as well as different text). */
+/* NOTE: IE 10 might use ":-ms-input-placeholder". */
+/* NOTE: Different browsers use different styles by default to style the placeholder text. Some set the opacity; some set a semi-opaque color. */
+.queryInput:-moz-placeholder {
+    color: #A7A7A7;
+}
+
+
+.queryPadding {
+    padding: 8px;
+}
+
+.lang {
+    background: rgba(0,0,200,.05);
+    color: rgba(0,0,0,.2);
+    font-size: 13px;
+    
+    cursor: pointer;
+    
+    /* Round just the left side to match queryInput. */
+    border-radius: 15px 0 0 15px;
+    
+    /* Just have a single border on the right to separate it from queryInput. */
+    border: none transparent;
+    border-right: 1px solid rgba(0,0,0,.1);
+    
+    /* Align the element inside of queryInput. */
+    position: absolute;
+    margin: 0 0 0 31px;
+    top: 3px;
+    height: 22px;
+    
+    /* The extra right padding is for the drop down arrow (see .lang:after). */
+    padding-right: 14px;
+    /* Center the text vertically. */
+    padding-top: 2px;
+    
+    font-size: 13px;
+    
+    /* Hide by default so that the default language name can be added first. */
+    visibility: hidden;
+    
+    /* Apply transitions to all changes. */
+    /* Transition for Mozilla (Firefox 4.0+) */
+       -moz-transition: all .3s;
+    /* Transition for WebKit */
+    -webkit-transition: all .3s;
+    /* Transition for Opera 10.5+ */
+            transition: all .3s;
+}
+
+.lang:hover, .more-button:hover {
+    color: rgba(0,0,0,.6);
+}
+
+/*BUG Opera does not properly render the arrow. It flickers when the mouse hovers over it. */
+.lang:after {
+    opacity: .15;
+    
+    width:  11px;
+    height: 6px;
+    
+    /* This is necessary (for some reason) to make the element visible. */
+    content: "";
+    
+    position: absolute;
+    top: 45%;
+    right: 1px;
+    
+       -moz-transition: opacity .3s;
+    /*BUG This does not work at least in Chrome 22. */
+    -webkit-transition: opacity .3s;
+            transition: opacity .3s;
+}
+
+.lang:hover:after, .lang:active:after, .activeLang:after {
+    opacity: .4;
+}
+
+.lang:active, .activeLang, .more-button:active {
+    background: rgba(0,0,255,.12);
+    color: rgba(0,0,0,.6);
+}
+
+.more-button:hover {
+    background: rgba(0,0,200,.08);
+}
+
+
+.crown_loader {
+    width:  20px;
+    height: 20px;
+    /* The Crown of Thorns icon */
+    background: no-repeat url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAQAAAAngNWGAAABcUlEQVQoFQXB72uMARwA8M+ee1ArOsW80FxKNsSQ215IGGuje2E6L5Q/QuydvPFqr3aSvJkiSl6cInWXVqg1P+buhXdWU+KNZlzHSZlnX58PAABscx8AAACA1BsrwoLNAEACOKPHuDENbUV95nwypqwPAKAu80tLuG0Nrsp0fBNemABgqxWXUbFgRggNdTWUhL0AjPuNjcIJPNGNvDCAuisAjPqhIjxHai047YFwR9NFgNR74YMRZwEAO7wSlvWQYtZX7xTMSAFAl0VN68xr6GdSZr+ckAAAeOinYYSD7LJqJ0INAECXJYMIj3NazivYZ70R3f4CAA44qVfREGzSkanZAAA4LjEthEESLCv7I7Rdd0oOJDgis8dHl8wDnLOEAaEf3NCLcAGPXANgu1Ul3PXaTV+Ee6bNYbfMMABl34VnmkLTMUOeCouq/mkDKaiqOmRUR8FbLzGr5Ja8KYcBAIAtPguhpQgAAACQU3FUHgDgP8wYe6XaJYMMAAAAAElFTkSuQmCC);
+    opacity: .2;
+    
+    /* Prepare to make the graphic spin. */
+    /*NOTE: Mozilla has some issues that are fixed by the Mozilla specific code at the bottom. */
+    -webkit-animation-name: rotate;
+       -moz-animation-name: rotate;
+            animation-name: rotate;
+    -webkit-animation-duration: 2s;
+       -moz-animation-duration: 2s;
+            animation-duration: 2s;
+    -webkit-animation-iteration-count: infinite;
+       -moz-animation-iteration-count: infinite;
+            animation-iteration-count: infinite;
+    -webkit-animation-timing-function: linear;
+       -moz-animation-timing-function: linear;
+            animation-timing-function: linear;
+}
+
+/* Make the Crown of Thorns spin. */
+@-webkit-keyframes rotate {
+    from {-webkit-transform: rotate(0deg);}
+    to   {-webkit-transform: rotate(360deg);}
+}
+@-moz-keyframes rotate {
+    from {-moz-transform: rotate(0deg);}
+    to   {-moz-transform: rotate(360deg);}
+}
+@keyframes rotate {
+    from {transform: rotate(0deg);}
+    to   {transform: rotate(360deg);}
+}
+
+
+.inputIcon {
+    /* Move the icon over the right end of the input box. */
+    margin-left: -55px;
+    /* Aligns the image in a somewhat cross-browser way. */
+    vertical-align: bottom;
+    
+    /* Remove the hideous selection rectangle when clicked. */
+    outline: 0;
+    
+    /* Fade out slightly when the mouse cursor moves off. */
+    /* Transition for Mozilla (Firefox 4.0+) */
+       -moz-transition: opacity .3s ease;
+    /* Transition for WebKit */
+    -webkit-transition: opacity .3s ease;
+    /* Transition for Opera 10.5+ */
+            transition: opacity .3s ease;
+    opacity: .3;
+    
+    position: absolute;
+    
+    /* Buttons do not automatically get a hand cursor. */
+    cursor: pointer;
+    
+    width: 25px;
+    height: 26px;
+    border: 0;
+    background: no-repeat left 60% url(data:image/gif;base64,R0lGODlhEAAQAPIHAAIFARweHDU3NFlbWHJ0cZ2fnNDTz/3//CH5BAAKAAAALAAAAAAQABAAAANDeLpnAyAQRgsYxhQBDD2WxxDABxTfIUxMmRYBY7jfTNGU3YrUMPQ4xYwnhPAsKNmJBIEkF05ZqkmcGlOMwBW74FSxCQA7);
+}
+
+/**
+ * Fade in icon on hover.
+ */
+.inputIcon:hover, .wrenchIcon:hover, .wrenchPadding:hover .wrenchIcon, .activeWrenchIcon {
+    /* !important is used to enforce the opacity for .activeWrenchIcon when the context menu is open. */
+    opacity: .6!important;
+}
+
+/**
+ * Emulate button pressing.
+ *
+ * @note This does not work in IE.
+ */
+.inputIcon:active {
+    /* This is a simple way of moving the icon over slightly when clicked. */
+    border-left: 1px solid transparent;
+    /* Keep the icon highlighted even in the mouse moves off. */
+    opacity: .6;
+}
+
+
+.wrenchPadding {
+    position: absolute;
+    /* Add padding around wrench with extra padding below and on the right. */
+    padding: 1px 6px 8px 1px;
+    
+    /* Use the hand cursor for the padded area, just like the button. */
+    cursor: pointer;
+    
+    /*TODO: Use fade class. */
+    /* Transition for Mozilla (Firefox 4.0+) */
+       -moz-transition: opacity 1s ease-in;
+    /* Transition for WebKit */
+    -webkit-transition: opacity 1s ease-in;
+    /* Transition for Opera 10.5+ */
+            transition: opacity 1s ease-in;
+}
+
+
+.wrenchIcon {
+    /* Darken the text so that it is more prominent. */
+    /* Transition for Mozilla (Firefox 4.0+) */
+       -moz-transition: opacity .6s ease;
+    /* Transition for WebKit */
+    -webkit-transition: opacity .6s ease;
+    /* Transition for Opera 10.5+ */
+            transition: opacity .6s ease;
+    
+    /* Fade out slightly when the mouse cursor moves off. */
+    opacity: .2;
+    
+    padding: 4px;
+    
+    /* Remove the hideous selection rectangle when clicked. */
+    outline: 0;
+    
+    /* Buttons do not automatically get a hand cursor. */
+    cursor: pointer;
+    
+    border: 0;
+    width: 24px;
+    height: 24px;
+    background: center no-repeat url(data:image/gif;base64,R0lGODdhEAAQAMIIAAEDADAyL05OSWlpYYyLg7GwqNjVyP/97iwAAAAAEAAQAAADQ3i6OwBhsGnCe2Qy+4LRS3EBn5JNxCgchgBo6ThwFDc+61LdY6m4vEeBAbwMBBHfoYgBLW8njUPmPNwk1SkAW31yqwkAOw==);
+}
+
+
+.contextMenu {
+    opacity:    0;
+    background: #FFF;
+    background: rgba(255,255,255,.95);
+    border:     #A3A3A3 1px solid;
+    padding:    3px;
+    /* This element must be on top (because it is created later, it is also above the topBar too). */
+    z-index:    999999;
+    
+    /* Transition for Mozilla (Firefox 4.0+) */
+       -moz-transition: opacity .2s ease-in;
+    /* Transition for WebKit */
+    -webkit-transition: opacity .2s ease-in;
+    /* Transition for Opera 10.5+ */
+            transition: opacity .2s ease-in;
+    
+    /* Rounded corners for Opera 10.5+, IE 9+, WebKit 532.5+ (Chrome 4, Safari 5), Gecko 2 (Mozilla 4.0) */
+    border-radius: 3px;
+    
+    /* This shadow is slightly dimmer than the panel because it is supposed to look higher up. */
+    /*TODO: The direction of the shadow could be set dynamically based on where it is on the page. */
+    box-shadow: 2px 2px 3px rgba(0,0,0,.2);
+}
+
+.contextMenu div {
+    /* Ensure that the cursor will look like a hand even if not hovering over the text. */
+    /*NOTE: Since Chromium fires the onmousemove event when the mouse cursor changes, we must set the cursor for the entire <div>, not just on hover */
+    /*      because if the user uses the keyboard arrows while the mouse is over an element, the onmousemove event will keep firing. */
+    cursor: pointer;
+}
+
+/* Menu items */
+.contextMenu div a {
+    color:           #555;
+    /* Block table-row-group is needed to make the possible table cells to display correctly (e.g., the pronunciation selection menu). */
+    /* Any display type that is block (as opposed to inline) is needed to make the width become 100%. */
+    /* NOTE: table-row could also works except for the fact that in Chrome, the element is treated as inline (cannot click on the space to the right) even though the background extends all the way. */
+    display:         table-row-group;
+    text-decoration: none;
+    /* Prevent the text from wrapping. */
+    white-space:     nowrap;
+    width:           100%;
+    
+    /* Make the background and font color fade when the mouse hovers/leaves. */
+       -moz-transition: background .2s, color .2s;
+    -webkit-transition: background .2s, color .2s;
+            transition: background .2s, color .2s;
+}
+
+/* The container for a (text) menu item. */
+.contextMenu div a div {
+    padding: 1px 0;
+}
+
+/* CSS table cell */
+/* The pronunciation context menu uses this. */
+.cell {
+    display: table-cell;
+    /* Add some space between the columns. */
+    padding-right: 8px;
+}
+
+/* The last column. */
+.cell:last-of-type {
+    /* Prevent the last column from displaying space on the right of it. */
+    padding-right: 0;
+}
+
+.menu_item_selected {
+    /*TODO: Determine if it is better to use the color that is similar to the yellow before the transparency is applied (#DDF) or use transparency. */
+    background: #E1E1FF;
+    color:      #3985A8;
+}
+
+.menu_item_line div {
+    border-top: 1px solid #A3A3A3;
+}
+
+
+.panel {
+    display:    none;
+    position:   fixed;
+    /* A solid background for IE/Mozilla 2-/Opera 9.6- */
+    background: #FFF;
+    /* Transparent white background for Mozilla/Opera 10/WebKit */
+    background: rgba(255,255,255,.97);
+    /* Chrome/Safari 5.1+ */
+    background: -webkit-linear-gradient(bottom, rgba(240,240,240,.98), rgba(255,255,255,.98) 60px);
+    /* IE 10, Firefox 16+, Opera 12.10+ */
+    background:         linear-gradient(to top, rgba(240,240,240,.98), rgba(255,255,255,.98) 60px);
+    border: #A3A3A3 1px solid;
+    /* Add enough padding to the top to push the contents past the top bar. */
+    /* Add extra padding on the sides so that the optional scroll bars will not cover up any of the content. */
+    padding: 60px 16px 16px 16px;
+    /* Add scroll bars when the contents extend past the height or width. */
+    overflow: auto;
+    
+    /* Rounded corners for Opera 10.5+, IE 9+, WebKit 532.5+ (Chrome 4, Safari 5), Gecko 2 (Mozilla 4.0) */
+    border-radius: 9px;
+    
+    /* Add both a drop shadow and an inset shadow to give a slightly rounded effect. */
+    box-shadow: 3px 3px 6px rgba(0,0,0,.2), inset -1px 0 2px rgba(0,0,0,.2);
+    
+    /* Just below the topBar (and context menu) but above callouts. */
+    z-index: 999990;
+    
+    /* Make sure that the panel does not get too large. */
+    max-width: 90%;
+}
+
+
+.panel a {
+    color: #3985A8;
+    
+    text-decoration: none;
+}
+
+.panel a:hover {
+    /*TODO: Do something better. */
+    text-decoration: underline;
+}
+
+
+.slide {
+    /* Transition for Mozilla (Firefox 4.0+) */
+       -moz-transition: top .6s ease;
+    /* Transition for WebKit */
+    -webkit-transition: top .6s ease;
+    /* Transition for Opera 10.5+ */
+            transition: top .6s ease;
+}
+
+
+fieldset {
+    border: 0;
+}
+
+legend {
+    font-size:    20px;
+    margin-left: -10px;
+}
+
+/* Make sure that the panel does not get too big. */
+/*NOTE: It needs to be set here because the panel must have "max-width: 100%" to prevent the panel as a whole from getting too big.*/
+.aboutBible {
+    max-width: 700px;
+}
+
+/* Align the first button to the left. */
+.button1of2 {
+    float: left;
+}
+
+/* The done button and the second of two should be right aligned. */
+.doneButton, .button2of2 {
+    float: right;
+}
+
+.button {
+    border: 1px solid #8EC1DA;
+    
+    border-radius: 4px;
+    
+    background-color: rgba(0,0,200,.05);
+    
+    box-shadow: inset 0 1px 3px rgba(255,255,255,.5), inset 0 -15px 3px rgba(0,0,200,.05);
+    
+    color: #3985A8;
+    
+    text-shadow: 0 1px #FFF;
+    
+    padding: 5px 14px;
+    outline: 0;
+    
+    cursor: pointer;
+
+    /* Fade the background color on mouse down. */
+    /* Transition for Mozilla (Firefox 4.0+) */
+       -moz-transition: background-color .2s;
+    /* Transition for WebKit */
+    -webkit-transition: background-color .2s;
+    /* Transition for Opera 10.5+ */
+            transition: background-color .2s;
+}
+
+.button:hover {
+    background-color: rgba(0,0,200,.07);
+}
+
+/**
+ * Emulate button pressing.
+ *
+ * @note This does not work in IE.
+ */
+.button:active {
+    /*TODO: Determine if it would be better just to change the text shadow color.  (Opera already moves the text.) */
+    padding: 6px 13px 4px 15px;
+    
+    background-color: rgba(0,0,200,.1);
+}
+
+.emailForm input, .emailForm textarea {
+    display: block;
+    background: #FFF;
+    color: #000;
+    border: 1px solid #CCC;
+    border-radius: 3px;
+    margin: 5px;
+    width: 230px;
+    max-width: 100%;
+    font-size: 14px;
+    padding: 2px;
+}
+
+.emailForm textarea {
+    /* Override the width to make it larger than the input boxes. */
+    width: 500px;
+    height: 120px;
+}
+
+.emailForm div {
+    /* Line up the email address link with the input boxes. */
+    padding-left: 4px;
+}
+
+
+
+.scrolls {
+    overflow: hidden;
+    max-width: 800px;
+    min-width: 200px;
+    margin-left:  auto;
+    margin-right: auto;
+    /* Fixes the clipping of italics p's at the beginning of a line (e.g., Acts 5:3 with a large window) or f's at the end of a line (Ex. 36:8). */
+    padding: 0 4px 0 4px;
+}
+
+/* Display a hand cursor for words that can be looked up. */
+.linked a {
+    cursor: pointer;
+}
+
+.scrolls {
+    cursor: auto;
+}
+
+/* Hide the cursor when hovering between words on the page (.hidden_cursor), hovering over words on the page (.hidden_cursor a), and hovering over a search verse (.hidden_cursor .search_verse span). */
+/* These all must be specified specifically because they may have a hand cursor style that needs to be directly overwitten. */
+.hidden_cursor, .hidden_cursor a, .hidden_cursor .search_verse span {
+    cursor: none!important;
+}
+
+
+.loaders {
+    height:     50px;
+    width:      100%;
+    background: no-repeat center url(data:image/gif;base64,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);
+    visibility: hidden;
+    opacity:    .5;
+}
+
+
+/* Make labels have a hand cursor. */
+label {
+    cursor: pointer;
+}
+
+.callout {
+    border-radius: 9px;
+    box-shadow: 3px 3px 6px rgba(0,0,0,.2), inset -1px 0 2px rgba(0,0,0,.2);
+    
+    background: #FFF;
+    /* Transparent background for Firefox 3.5- */
+    background: rgba(255, 255, 255, .95);
+    /* Chrome/Safari 5.1+ */
+    background: -webkit-linear-gradient(bottom, rgba(240,240,240,.97), rgba(255,255,255,.97) 60px);
+    /* IE 10, Firefox 16+, Opera 12.10+ */
+    background:         linear-gradient(to top, rgba(240,240,240,.97), rgba(255,255,255,.97) 60px);
+    
+    position: absolute;
+    border: #ccc solid 1px;
+    /* There is no padding on the left so that the lexicon title's diacritics have enough room to be displayed. */
+    padding: 4px 4px 4px 0;
+    font-size: 16px;
+    min-width: 46px;
+    max-width: 95%;
+    max-height: 90%;
+    width:  300px;
+    height: 125px;
+}
+
+.callout .inside {
+    overflow-x: hidden;
+    height: 100%;
+}
+.pointer-down {
+    box-shadow: 6px 4px 6px -3px rgba(0,0,0,.2);
+            transform: rotate(45deg);
+       -moz-transform: rotate(45deg);
+    -webkit-transform: rotate(45deg);
+    position: absolute;
+    width:  20px;
+    height: 20px;
+    border-bottom: #ccc solid 1px;
+    border-right:  #ccc solid 1px;
+    
+    /* Chrome/Safari 5.1+ */
+    background: -webkit-linear-gradient(left top,        rgba(255,255,255,0) 41%, rgba(240,240,240,.97) 41%);
+    /* IE 10, Firefox 16+, Opera 12.10+ */
+    background:         linear-gradient(to right bottom, rgba(255,255,255,0) 41%, rgba(240,240,240,.97) 41%);
+    bottom: -11px;
+}
+.pointer-up {
+    box-shadow: -1px -3px 6px -3px rgba(0,0,0,.2);
+            transform: rotate(45deg);
+       -moz-transform: rotate(45deg);
+    -webkit-transform: rotate(45deg);
+    
+    position: absolute;
+    top: -11px;
+    
+    width:  20px;
+    height: 20px;
+    
+    border-top:  #ccc solid 1px;
+    border-left: #ccc solid 1px;
+    
+    /* Chrome/Safari 5.1+ */
+    background: -webkit-linear-gradient(right bottom, rgba(255,255,255,0) 45%, rgba(255,255,255,.95) 45%);
+    /* IE 10, Firefox 16+, Opera 12.10+ */
+    background:         linear-gradient(to left top,  rgba(255,255,255,0) 45%, rgba(255,255,255,.95) 45%);
+}
+
+/* Hide certain callout content when showing details (such as the "more" button). */
+.detailed_callout .simple_only {
+    display: none;
+}
+
+/* Hide detailed callout content by default. */
+.detailed_only {
+    display: none;
+}
+
+/* Display detailed callout content when showing details. */
+.detailed_callout .detailed_only {
+    display: block;
+}
+
+
+.lex-title {
+    /* Push the text over a little so that diacritics are not cut off. */
+    margin-left: 7px;
+}
+
+.lex-orig_word {
+    /* Palatino Linotype (or similar fonts) are used for Greek and BF_Hebrew for Hebrew. */
+    /* If both fonts are installed on the computer, the Hebrew letters will fall back to BF_Hebrew, */
+    /* but if they are not installed, this will not happen; therefore, a separate class is needed for the Hebrew text. */
+    font-family: 'Palatino Linotype', Palatino, TexGyrePagella, 'TeX Gyre Pagella', 'TeX Gyre Pagella Webfont', 'URWPalladioL', 'Book Antiqua', 'Times new Roman', Times, serif;
+    font-size: 30px;
+    /* The vertical alignment is required simply to match up with .lex-pronun. */
+    vertical-align: super;
+    
+    /* Transition the font size when expanding the callout for more details. */
+    /* Transition for Mozilla (Firefox 4.0+) */
+       -moz-transition: font-size 150ms ease 150ms;
+    /* Transition for WebKit */
+    /* NOTE: In the WebKit specific CSS below, the line-height property is required to fix some issues and this property also must transition with the font size. */
+    -webkit-transition: font-size 150ms ease 150ms, line-height 150ms ease 150ms;
+    /* Transition for Opera 10.5+ */
+            transition: font-size 150ms ease 150ms;
+}
+
+/* The first letter of Psalm 119 titles is a Hebrew letter. */
+.hebrew, .psalm_119_heading:first-letter {
+    font-family: "Ezra SIL SR", BF_Hebrew;
+}
+
+/* Zoom the font in when transitioning to show more details. */
+.large_callout .lex-orig_word {
+    font-size: 55px;
+}
+
+
+.lex-pronun {
+    font-family: Verdana, 'Bitstream Vera Sans', 'Bitstream Vera Sans Webfont', 'DejaVu Sans', sans-serif;
+    font-size: 14px;
+    white-space: nowrap;
+    /* Because this element can wrap if the word is long and the line height is rather large due to the large original word one the line above, */
+    /* it needs to be centered above the baseline to look good. */
+    vertical-align: super;
+    /* This pushes down the context menu and drop down arrow slightly. */
+    padding-bottom: 3px;
+    
+    /* Transition the font size when expanding the callout for more details. */
+    /* Transition for Mozilla (Firefox 4.0+) */
+       -moz-transition: font-size 200ms ease 10ms;
+    /* Transition for WebKit */
+    -webkit-transition: font-size 200ms ease 10ms;
+    /* Transition for Opera 10.5+ */
+            transition: font-size 200ms ease 10ms;
+}
+
+/* Zoom the font in when transitioning to show more details. */
+.large_callout .lex-pronun {
+    font-size: 16px;
+}
+
+.expandable {
+    margin-top: 7px;
+    /* Without this, the before pseudo element does not stay with the parent element when scrolling in WebKit. */
+    /* In Mozilla, the pseudo element sometimes stays with the element, but there is a long delay before it is redrawn. */
+    position: relative;
+}
+
+.expandable_summary {
+    font-weight: bold;
+    /* Push the text over to make way for the arrow. */
+    padding-left: 10px;
+}
+
+.dropdown, .lang:after, .expandable_summary:before {
+    /* The drop down arrow (triangle) */
+    background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAsAAAAGCAQAAAC/O6xzAAAAXklEQVQI12Ng4GJIZXjP8B8JTmYQY2BgY9BmWMjwFS54lMEHqJSBCUgYMSyBShxnCGTgZ2BmYABJcAMlFjN8AaoMZBBgYGGAApAOPYYSBnegSrggRIINKMQB0c7AAAAMyxgJkjHDSAAAAABJRU5ErkJggg==);
+    background-repeat: no-repeat;
+}
+
+.expandable_summary:before {
+    /* This is necessary (for some reason) to make the element visible. */
+    content: "";
+    
+    /* This is needed to be able to change the width and height. */
+    position: absolute;
+    
+    width:  11px;
+    height: 6px;
+    
+    /* Reposition the arrow to align with the left. */
+    margin-top: 8px;
+    margin-left: -12px;
+    
+    /* The default position for the arrow is rotated to the right. */
+            transform: rotate(-90deg);
+       -moz-transform: rotate(-90deg);
+    -webkit-transform: rotate(-90deg);
+    /* This is used to center the rotation of the arrow to make it rotate properly. */
+            transform-origin: 6px 1px;
+       -moz-transform-origin: 6px 1px;
+    -webkit-transform-origin: 6px 1px;
+    
+            transition:          transform 250ms;
+       -moz-transition:     -moz-transform 250ms;
+    -webkit-transition: -webkit-transition 250ms;
+}
+
+/* The expander's summary's pseudo element when clicked. */
+.expandable_summary.expanded:before {
+    /* Rotate the arrow to point down. */
+    /*NOTE: If 0 degrees is used, it will visually jump; therefore, 1 degree is used. */
+            transform: rotate(-1deg);
+       -moz-transform: rotate(-1deg);
+    -webkit-transform: rotate(-1deg);
+}
+
+/* Set the number styles for list elements (specifically for long definitions). */
+ol {
+    margin: 0;
+    list-style-type: decimal;
+    padding-left: 2em;
+}
+
+ol ol {
+    list-style-type: lower-latin;
+}
+
+ol ol ol {
+    list-style-type: lower-roman;
+}
+
+ol ol ol ol {
+    list-style-type: upper-latin;
+}
+
+ol ol ol ol ol {
+    list-style-type: upper-roman;
+}
+
+ol ol ol ol ol ol {
+    list-style-type: decimal;
+}
+
+
+.dropdown {
+    /* Move the arrow all the way to the right, and center it vertically. */
+    background-position: 100%;
+    /* Add some extra space to the right for the drop down arrow. */
+    padding-right: 12px;
+    cursor: pointer;
+}
+
+.lex-body {
+    /* Push the text over a little to make it line up (more or less) with the title. */
+    margin-left: 4px;
+}
+
+/* The element that causes the text to fade out when a large callout is shown. */
+.transparent_el {
+    background: #FFF;
+}
+
+/*NOTE See above for .more-button-buffer:hover and .more-button-buffer:active. */
+.more-button {
+    position: absolute;
+    bottom: 0;
+    right:  0;
+    
+    border-top:  1px solid rgba(0,0,0,.1);
+    border-left: 1px solid rgba(0,0,0,.1);
+    border-radius: 9px 0;
+    
+    padding: 4px;
+    
+    font-size: 12px;
+    /* This is the same as .lang. */
+    background: rgba(0,0,200,.05);
+    color: rgba(0,0,0,.2);
+    
+    cursor: pointer;
+    
+    /* Prevent the user from selecting the text (though only when directly clicking it). */
+    /* This also prevent users from copying and text in Mozilla. */
+              user-select: none;
+    -webkit-touch-callout: none;
+      -webkit-user-select: none;
+         -moz-user-select: none;
+          -ms-user-select: none;
+    
+    /* Apply transitions to all changes. */
+    /* Transition for Mozilla (Firefox 4.0+) */
+       -moz-transition: background .2s, color .2s;
+    /* Transition for WebKit */
+    -webkit-transition: background .2s, color .2s;
+    /* Transition for Opera 10.5+ */
+            transition: background .2s, color .2s;
+}
+
+.more-button:active {
+    /* Emulate button pressing */
+    /*NOTE: There is another .more-button:active above. */
+    padding: 5px 3px 3px 5px;
+    /* The box shadow gives some depth to the button when it is pressed. */
+    box-shadow: inset 2px 2px 3px rgba(0,0,0,.2);
+}
+
+/* This is an invisible element that is used to prevent real text from going over the more button. */
+.more-button-buffer {
+    position: static;
+    visibility: hidden;
+    float: right;
+    /* NOTE: Because this element is not positioned absolutely, it is moved over to the left slightly (due to padding in the parent element), */
+    /*       but this extra padding adds extra buffer between the button and the text, so the padding attribute does not need to be changed here. */
+}
+
+
+/* The class allows for simple fade ins and outs with JavaScript. */
+.fade {
+    /* Fade out slightly when the mouse cursor moves off. */
+    /* Transition for Mozilla (Firefox 4.0+) */
+       -moz-transition: opacity .3s ease;
+    /* Transition for WebKit */
+    -webkit-transition: opacity .3s ease;
+    /* Transition for Opera 10.5+ */
+            transition: opacity .3s ease;
+}
+
+
+/* Verses created from a search. */
+.search_verse {
+    text-indent: 2em;
+    width: 100%;
+}
+
+.search_verse span {
+    cursor: pointer;
+}
+
+/* Verses created from a verse lookup. */
+.verse {
+    text-indent: 1em;
+    width: 100%;
+}
+
+/* Make all lines of text the same height. */
+.scrolls .verse, .scrolls .first_verse, .psalm_title, .search_verse, .paragraph, .subscription {
+    line-height: 19px;
+}
+
+/***************************************/
+/* Verses created from a verse lookup. */
+/***************************************/
+
+.psalm_title {
+    /* Adding padding to the sides and bottom to distinguish the Psalm title from the rest of the text. */
+    /*NOTE: Padding should always be used for verses instead of margin because it can interfere with determining the verse range. */
+    padding: 0 2em 19px 2em;
+}
+
+/* Subscriptions added to the end of Pauline Epistles. */
+.subscription {
+    /* Add indentation on both sides and insert a single blank line between the text and the subscription. */
+    /*NOTE: Padding should always be used for verses instead of margin because it can interfere with determining the verse range. */
+    /*FIXME: Because of the top padding, when looking up a subscription, the text is scrolled to the blank line above the text. */
+    padding: 19px 2em 0 2em;
+}
+
+/* Drop caps for the first letter of a chapter */
+.first_verse:first-letter, .first_paragraph:first-letter {
+    /*FIXME: Capital J's can cover up part of characters in the third line of the first verse.  (See 2 Kings 22:1 in a narrow window.) */
+    font-size: 51px;
+    float:     left;
+    
+    /*NOTE: Bold makes some letters better, especially P's. */
+    /* This fixes the spacing problem with some letters, like W, but not quite capital J's (see Psalm 43). */
+    margin-bottom: -9px;
+    
+    /* Ensure that the verse letter has the correct line height even if it is a divine word.  (See Psalm 3.) */
+    line-height: 19px!important;
+}
+
+.first_verse {
+    /* This fixes a bug where the last word of the first verse sometimes wraps. */
+    width: 100%;
+    /* This makes sure that the first line is at least two lines long to give the drop caps just enough space. */
+    min-height: 38px;
+}
+
+
+.paragraph {
+    text-indent: 2em;
+}
+
+.paragraph .first_verse {
+    display: inline;
+}
+
+.first_paragraph {
+    text-indent: 0;
+}
+
+.paragraph .verse {
+    display: inline;
+}
+
+/* Verse numbers in paragraph form */
+.paragraph span {
+    /* Shrink the verse number. */
+    font-size: 75%;
+    /* Raise it slightly. */
+    vertical-align: 4px;
+    /* Remove extra line height created by raising the numbers. */
+    line-height: 1px!important;
+    /* Move the verse numbers over a little closer to the text. */
+    margin-right: -2px;
+}
+
+/* Serif fonts */
+.book, .chapter, .short_book, .first_verse:first-letter, .first_paragraph:first-letter, .d, .psalm_119_heading {
+    font-family: 'TeX Gyre Pagella Webfont', 'Palatino Linotype', Palatino, TexGyrePagella, 'TeX Gyre Pagella', 'URWPalladioL', 'Book Antiqua', 'Times new Roman', Times, serif;
+}
+
+.book, .chapter, .short_book {
+    text-align: center;
+    width: 100%;
+    font-size: 23px;
+}
+
+.chapter, .short_book, .psalm_119_heading {
+    padding:     13px 0 13px 0;
+    margin:      0;
+    line-height: 31px;
+}
+
+/* Long book titles */
+div.book {
+    padding: 57px 0 19px 0;
+}
+
+
+/* Main name for long book titles */
+h1 {
+    margin:      0;
+    font-size:   69px;
+    display:     block;
+    font-weight: bold;
+    line-height: 95px;
+}
+
+/* Pre- and post-titles for long book titles */
+h2 {
+    font-size:   23px;
+    display:     block;
+    font-weight: normal;
+    margin:      0;
+    line-height: 19px;
+}
+
+
+/* The divine name of God */
+.d {
+    /* Firefox 4.0+ and recent version of Chrome also support font-feature-settings:"smcp" which turns on small caps as well. */
+    font-variant: small-caps;
+    font-size: 16px;
+    /* Different fonts have different line-heights.  This eliminates the inconsistency. */
+    line-height: 1px!important;
+}
+
+/* Added (implied) words */
+.a {
+    font-style: italic;
+}
+
+/* Quotations of Jesus */
+.q {
+    -webkit-transition: color 1s;
+            transition: color 1s;
+    color: #D00;
+}
+/* Override for black letters. */
+.black_letter .q {
+    color: #000;
+}
+
+
+.no_results {
+    margin-top: 10px;
+}
+
+
+.psalm_119_heading {
+    text-align: center;
+    font-size: 23px;
+}
+
+.psalm_119_heading:first-letter {
+    /* For some reason, the Hebrew letter creates a line height issues that can be solved by completely removing the line height from it. */
+    line-height: 0;
+}
+
+
+/* Style the previous and next links for the non-JavaScript version. */
+.static_link {
+    text-decoration: none;
+    color: #000;
+    opacity: .5;
+    margin: 10px 0;
+}
+.static_link:hover {
+    opacity: 1;
+}
+
+.prev {
+    float: left;
+}
+
+.next {
+    float: right;
+}
+
+.unsupported_warning {
+    display: block;
+    text-align: center;
+    padding: 10px;
+}
+
+/* This is used in the non-JS version. */
+.footer {
+    padding: 20px;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+/* Highlighted found words from searches */
+.f1  {
+    background: #FF6;
+}
+.f2  {
+    background: #AFF;
+}
+.f3  {
+    background: #9F9;
+}
+.f4  {
+    background: #F99;
+}
+.f5  {
+    background: #F6F;
+}
+.f6  {
+    background: #800;
+}
+.f7  {
+    background: #0A0;
+}
+.f8  {
+    background: #860;
+}
+.f9  {
+    background: #049;
+}
+.f10 {
+    background: #909;
+}
+.f11 {
+    background: #EE0;
+}
+.f12 {
+    background: #0FF;
+}
+.f13 {
+    background: #A0A;
+}
+.f14 {
+    background: #7F0;
+}
+.f15 {
+    background: #19f;
+}
+.f16 {
+    background: #F00;
+}
+.f17 {
+    background: #F70;
+}
+.f18 {
+    background: #CF0;
+}
+.f19 {
+    background: #AA9;
+}
+.f20 {
+    background: #469;
+}
+
+/* Fonts for Mozilla/Opera/WebKit/IE9+ */
+/*NOTE: If no local() fonts are supplied, Mozilla will always download the web font if it detects an element with this CSS. */
+@font-face {
+    font-family: 'TeX Gyre Pagella Webfont';
+    src: local('Palatino Linotype'),
+         local('PalatinoLinotype-Roman'),
+         local('Palatino'),
+         local('TeX Gyre Pagella'),
+         local('TeXGyrePagella-Regular'),
+         url('/fonts/TeXGyrePagella-Regular.woff') format('woff');
+}
+@font-face {
+    font-family: 'TeX Gyre Pagella Webfont';
+    src: local('Palatino Linotype Italic'),
+         local('PalatinoLinotype-Italic'),
+         local('Palatino Italic'),
+         local('Palatino-Italic'),
+         local('TeXGyrePagella-Italic'),
+         url('/fonts/TeXGyrePagella-Italic.woff') format('woff');
+    font-style: italic;
+}
+@font-face {
+    font-family: 'TeX Gyre Pagella Webfont';
+    src: local('Palatino Linotype Bold'),
+         local('PalatinoLinotype-Bold'),
+         local('Palatino Linotype, Bold'),
+         local('Palatino Bold'),
+         local('Palatino-Bold'),
+         local('TeXGyrePagella-Bold'),
+         url('/fonts/TeXGyrePagella-Bold.woff') format('woff');
+    font-weight: bold;
+}
+@font-face {
+    font-family: 'TeX Gyre Pagella Webfont';
+    src: local('Palatino Linotype Bold Italic'),
+         local('PalatinoLinotype-BoldItalic'),
+         local('Palatino-BoldItalic'),
+         local('TeXGyrePagella-BoldItalic'),
+         url('/fonts/TeXGyrePagella-BoldItalic.woff') format('woff');
+    font-weight: bold;
+    font-style:  italic;
+}
+
+@font-face {
+    font-family: 'Bitstream Vera Sans Webfont';
+    src: local('Verdana'),
+         local('Bitstream Vera Sans'),
+         local('BitstreamVeraSans-Roman'),
+         url('/fonts/BitstreamVeraSans-Roman.woff') format('woff');
+}
+@font-face {
+    font-family: 'Bitstream Vera Sans Webfont';
+    src: local('Verdana Italic'),
+         local('Verdana-Italic'),
+         local('Bitstream Vera Sans Oblique'),
+         local('BitstreamVeraSans-Oblique'),
+         url('/fonts/BitstreamVeraSans-Oblique.woff') format('woff');
+    font-style: italic;
+}
+@font-face {
+    font-family: 'Bitstream Vera Sans Webfont';
+    src: local('Verdana Bold'),
+         local('Verdana-Bold'),
+         local('Bitstream Vera Sans Bold'),
+         local('BitstreamVeraSans-Bold'),
+         url('/fonts/BitstreamVeraSans-Bold.woff') format('woff');
+    font-weight: bold;
+}
+@font-face {
+    font-family: 'Bitstream Vera Sans Webfont';
+    src: local('Verdana Bold Italic'),
+         local('Verdana-BoldItalic'),
+         local('Bitstream Vera Sans Bold Oblique'),
+         local('BitstreamVeraSans-BoldOblique'),
+         url('/fonts/BitstreamVeraSans-BoldOblique.woff') format('woff');
+    font-weight: bold;
+    font-style:  italic;
+}
+
+@font-face {
+    font-family: 'BF_Hebrew';
+    src: local('Ezra SIL SR'),
+         url('/fonts/BF_Hebrew.woff') format('woff');
+}
+
+
+
+/* HTML scrollbar styles (WebKit only) */
+/* NOTE: If ::-webkit-scrollbar is not present, the other styles will not work. */
+html > ::-webkit-scrollbar {
+    width: 8px;
+    background: #FFF;
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+}
+
+html > ::-webkit-scrollbar-thumb {
+    border-radius: 4px;
+    background: rgba(130,130,130,.3);
+    /* Do not let the thumb get too small. */
+    min-height: 35px;
+}
+
+html > ::-webkit-scrollbar-thumb:hover {
+    background: rgba(130,130,130,.5);
+}
+
+/* <div> scrollbars (WebKit only) */
+/* NOTE: If ::-webkit-scrollbar is not present, the other styles will not work. */
+div ::-webkit-scrollbar {
+    width: 8px;
+    background: transparent;
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+    border-radius: 4px;
+}
+
+div ::-webkit-scrollbar-thumb {
+    border-radius: 4px;
+    background: rgba(130,130,130,.3);
+    /* Do not let the thumb get too small. */
+    min-height: 25px;
+}
+
+div ::-webkit-scrollbar-thumb:hover {
+    background: rgba(130,130,130,.5);
+}
+
+
+/* Set viewport width for modile devices. */
+/*NOTE: This needs to be tested on more devices and may need multiple media queries to display properly across devices. */
+@-o-viewport {
+  width: 67%;
+  user-zoom: fixed;
+}
+@-ms-viewport {
+  width: 67%;
+  user-zoom: fixed;
+}
+@-moz-viewport {
+  width: 67%;
+  user-zoom: fixed;
+}
+@-webkit-viewport {
+  width: 67%;
+  user-zoom: fixed;
+}
+@viewport {
+  width: 67%;
+  user-zoom: fixed;
+}
+
+
+/*******************************/
+/* WebKit & Opera specific CSS */
+/*******************************/
+
+/* Make the drop caps aligned with the second line of text. */
+.webkit .first_verse:first-letter, .webkit .first_paragraph:first-letter, .opera .first_verse:first-letter, .opera .first_paragraph:first-letter {
+    margin-bottom: 0;
+    margin-top:    5px;
+    padding: 1px;
+}
+
+/****************************/
+/* Just WebKit specific CSS */
+/****************************/
+
+.webkit .lex-orig_word {
+    /* NOTE: Because the font size changes via a CSS transition, the line-height also must transition as well. See above for the declaration. */
+    line-height: 150%;
+}
+
+/***************************/
+/* Just Opera specific CSS */
+/***************************/
+
+.opera .first_verse:first-letter, .opera .first_paragraph:first-letter {
+    margin-bottom: 0;
+    margin-top:    13px;
+    padding: 1px;
+}
+
+/* Because Opera raises these elements regardless of whether they are on the same line or not, the alignment must be reverted, */
+/* and thereby causing the .lex-pronun element to be improperly aligned if it wraps. */
+.opera .lex-orig_word, .opera .lex-pronun {
+    vertical-align: baseline;
+}
+
+
+/*******************/
+/* IE specific CSS */
+/*******************/
+
+/* Make the inputIcon appear next to the queryInput. */
+/*NOTE: The query box is slightly off centered in IE with this CSS. */
+.ie .inputIcon {
+    position: relative;
+}
+
+/* Make the drop caps aligned with the second line of text. */
+.ie .first_verse:first-letter, .ie .first_paragraph:first-letter {
+    margin-top: 5px;
+    margin-bottom: 0;
+}
+
+
+/************************/
+/* Mozilla specific CSS */
+/************************/
+
+/* Center the crown of thorns loader. */
+.moz .crown_loader {
+    -moz-transform-origin: 50.5%;
+    position: relative;
+    top: -1px;
+}

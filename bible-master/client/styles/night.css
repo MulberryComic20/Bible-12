@@ -1,0 +1,253 @@
+/**
+ * BibleForge
+ *
+ * @date    11-30-12
+ * @version alpha (α)
+ * @link    http://BibleForge.com
+ * @license The MIT License (MIT)
+ */
+
+/*!
+ * The BibleForge motto:
+ *
+ * "all things whatsoever ye would that men should do to you, do ye even so to them."
+ *     —Jesus (Matthew 7:12)
+ */
+
+/*!
+ * Copyright (C) 2014
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining
+ * a copy of this software and associated documentation files (the
+ * “Software”), to deal in the Software without restriction, including
+ * without limitation the rights to use, copy, modify, merge, publish,
+ * distribute, sublicense, and/or sell copies of the Software, and to
+ * permit persons to whom the Software is furnished to do so.
+ *
+ * THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND,
+ * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+ * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+ * IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
+ * CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
+ * TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+ * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ */
+
+/* NOTE: It might be nice to apply transitions to all of these elements (without the .night) in order to fade in and out of Night Mode; */
+/*       however, currently gradients do not transition (although the spec says they should), so it doesn't really work right now. */
+
+/* NOTE: Both the <BODY> and <HTML> tags have a background color. */
+/*       Also, if the <HTML> tag's background is not set, parts of the viewport may appear white. */
+/* NOTE: Since the <HTML> tag has the class, the class name must come after its tag name. */
+.night body, html.night {
+    background: #121212;
+    color: #828282;
+}
+
+.night .q {
+    color: #F33;
+}
+.night .black_letter .q {
+    color: #828282;
+}
+
+.night .searchBars {
+    /* Transparent Black background for Firefox 3.5-/Opera 10 */
+    background: rgba(0,0,0,.79);
+    /* Chrome/Safari 5.1+ */
+    background: -webkit-linear-gradient(rgba(0,0,0,.93), rgba(0,0,0,.86) 25%, rgba(0,0,0,.7));
+    /* IE 10, Firefox 16+, Opera 12.10+ */
+    background:         linear-gradient(rgba(0,0,0,.93), rgba(0,0,0,.86) 25%, rgba(0,0,0,.7));
+}
+
+.night .infoBars {
+    background: rgba(0,0,0,0.65);
+    border-color: #000;
+}
+
+.night .infoLeft {
+    /* Add a slight radial blur to make sure the text is always readable.*/
+    /* Chrome/Safari 5.1+ */
+    background: -webkit-radial-gradient(ellipse farthest-corner, #000 70%, rgba(0,0,0,0) 100%);
+    /* IE 10, Firefox 16+, Opera 12.10+ */
+    background:         radial-gradient(ellipse farthest-corner, #000 70%, rgba(0,0,0,0) 100%);
+}
+
+.night .queryInput {
+    background: rgba(0,0,0,.2);
+    color: rgba(130,130,130,.7);
+    border-color: rgba(130,130,130,.5);
+}
+
+.night .queryInput:hover {
+    border-color: rgba(130,130,130,.85);
+}
+
+.night .queryInput:focus {
+    background: #000;
+    color: #828282;
+    border-color: #828282;
+}
+
+.night .lang {
+    color: rgba(130,130,130,.7);
+    border-right-color: rgba(130,130,130,.55);
+}
+
+/* NOTE: The activeLang class is used to keep the language button highlighted while the context menu is open. */
+.night .lang:hover, .night .activeLang {
+    color: #828282;
+    border-right-color: #828282;
+}
+
+
+.night .callout, .night .panel {
+    background: rgba(18,18,18,.93);
+    border-color: #828282;
+}
+
+.night .callout .pointer-down {
+    /* Chrome/Safari 5.1+ */
+    background: -webkit-linear-gradient(left top,        rgba(0,0,0,0) 41%, rgba(18,18,18,.97) 41%);
+    /* IE 10, Firefox 16+, Opera 12.10+ */
+    background:         linear-gradient(to right bottom, rgba(0,0,0,0) 41%, rgba(18,18,18,.97) 41%);
+    border-color: #828282;
+}
+
+.night .callout .pointer-up {
+    /* Chrome/Safari 5.1+ */
+    background: -webkit-linear-gradient(right bottom, rgba(0,0,0,0) 45%, rgba(18,18,18,.97) 45%);
+    /* IE 10, Firefox 16+, Opera 12.10+ */
+    background:         linear-gradient(to left top,  rgba(0,0,0,0) 45%, rgba(18,18,18,.97) 45%);
+    border-color: #828282;
+}
+
+.night .transparent_el {
+    background: #000;
+}
+
+.night .more-button {
+    border-color: rgba(130,130,130,.4);
+    color: rgba(130,130,130,.6);
+    background: rgba(0,0,0,0);
+}
+
+.night .button {
+    border-color: rgba(130,130,130,.55);
+    color: rgba(130,130,130,.7);
+    background: rgba(0,0,0,0);
+}
+
+.night .more-button:hover, .night .button:hover {
+    border-color: #828282;
+    color: #828282;
+    background: rgba(0,0,0,1);
+}
+
+.night .button {
+    box-shadow:  none;
+    text-shadow: none;
+}
+
+.night .emailForm input, .night .emailForm textarea {
+    background: #121212;
+    color: #828282;
+    border-color: #828282;
+}
+
+
+.night .contextMenu {
+    background: rgba(18,18,18,.94);
+}
+
+.night .menu_item_selected {
+    background: #828282;
+    color: #000;
+}
+
+.night .panel a {
+    color: #EEE;
+}
+
+.night .inputIcon {
+    background-image: url(data:image/gif;base64,R0lGODdhEAAQAMIIAAEBAS0tLWFhYYyMjKWlpcnJyeLi4vv7+ywAAAAAEAAQAAADQwi6EHTHDEbFISGIcgIFlscMx3cIH1BMTJkKBhO430zRlN2KFEH0OMWMJ4TwLCjZiQSBJBdOWapJnBpTDMMVu+BUsQkAOw==);
+}
+
+.night .loaders {
+    background-image: url(data:image/gif;base64,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);
+}
+
+.night .crown_loader {
+    background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAQAAAAngNWGAAAAAXNSR0IArs4c6QAAAXZJREFUKM+F0rtLFQAUB+CfXnWQCIMeQxQEYQ8IJcqgpTIiC4cM2/oferuIDU5tRkUNikWBNBT0IEWEmtKgLtSW4GSbWVLpZNevIeLSvYJnO4fvwDmHk1SF7R5lrVDnnWVM27Q6OGOzLh0+Gteq2bAlHbrtqoRjSn5ZwJD6RJ+SRV/xxtUy22rZlcSAaRPggzGjiU7sK8MuS4kNOJ54rjHRhJbEmN4yPOm7AbxO1GlIEqeN4L6ii+VNP+GzE85WTL7TJOZt/ptOGTdkIlH3H6tJ3FZ0z6zGuKGkVQG1VUd77Kf2BPtjjxXNCUarYI05bQmeRcG0YX3eq7euio54oceChiQ2WlQyan0FOqbWIGj7V+qw6BVuOqWQJGoT1zFpxqVy7zlziRbsThK3bEtwPvFUfxnusKIz8cCUO77goUFvE3uVtJdht28YV0TRUYe8xIwnfvtRud8BvS6YdzdJ9OCyfoddW/0vt5gFCw6u9eMFA45oqqz/ATzLTtJ03pdKAAAAAElFTkSuQmCC);
+    opacity: .4;
+}
+
+.night .dropdown, .night .lang:after, .night .expandable_summary:before {
+    background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAsAAAAGCAQAAAC/O6xzAAAAAXNSR0IArs4c6QAAAF9JREFUCNdj6OLqSu163/UfCU7uEmPoYuvS7lrY9RUueLTLp4uLoYsJqN6oawlU4nhXYBd/FzMDA0iCGyixuOsLUGVgl0AXCwMEgHXodZV0uQNVwgShEmxAIQ6wdiAAAAUwNSUbjgKTAAAAAElFTkSuQmCC);
+}
+
+.night .wrenchIcon {
+    background-image: url(data:image/gif;base64,R0lGODdhEAAQAMIIAAMDAyoqKk9PT3R0dJeXl7Gxsc7Ozv39/SwAAAAAEAAQAAADQwi6S3eGsBnMe2My+0zQi3Adn5JNw1gAQXFo6UhwFDc+61LdY6m4vIeAAbwQChEfoIgBLW8njUPmBNwk1ekBW31yqwkAOw==);
+    opacity: .25;
+}
+
+.lang:active, .activeLang, .more-button:active {
+    background: rgba(0,0,0,.2);
+}
+
+.night .lang:after {
+    opacity: .5;
+}
+.night .lang:hover:after, .activeLang:after {
+    opacity: .9!important;
+}
+
+.night .menu_item_line div {
+    border-top: 1px solid #828282;
+}
+
+/* Remove shadows to speed up painting. */
+.night .infoBars, .night .queryInput, .night .contextMenu, .night .panel, .night .button, .night .callout, .night .pointer-down, .night .pointer-up, .night .more-button {
+    box-shadow:  none;
+    text-shadow: none;
+}
+
+/* WebKit's default font color is too bright, so it needs to be lightened. */
+.night input::-webkit-input-placeholder, .night textarea::-webkit-input-placeholder {
+    color: rgba(130,130,130,.65);
+}
+
+.night ::-moz-selection {
+    background: #828282;
+    color: #000;
+}
+.night ::selection {
+    /* Because WebKit handles selection background color differently, it needs to be lighter. */
+    background: rgba(130,130,130,.5);
+    color: #000;
+}
+
+.night .q::-moz-selection {
+    color: #A00;
+}
+.night .q::selection {
+    color: #A00;
+}
+
+.night .menu_item_selected ::-moz-selection, .night .panel a::-moz-selection {
+    color: #EEE;
+}
+.night .menu_item_selected ::selection, .night .panel a::selection {
+    color: #EEE;
+}
+
+
+/***********************/
+/* WebKit specific CSS */
+/***********************/
+
+/* Set the style for the main scrollbar. */
+/* NOTE: Other scrollbars (like in <div> tags) do not need to be styled because they are transparent and the background color shows through. */
+html.night > ::-webkit-scrollbar {
+    background: #000;
+}
